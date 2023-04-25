@@ -1,8 +1,24 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp, h } from 'vue';
+import App from './App.vue';
+import PrimeVue from 'primevue/config';
 import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import 'bootstrap';
-import './assets/scss/main.scss';
+import './assets/styles/main.scss';
+import 'primevue/resources/themes/md-dark-deeppurple/theme.css';     
+import 'primevue/resources/primevue.min.css';
+import 'primeicons/primeicons.css'
 
-createApp(App).mount('#app')
+const RootComponent = {
+    render() {
+        return h(App);
+    },
+};
+
+export const app = createApp(RootComponent);
+
+app.config.productionTip = false;
+
+app.use(PrimeVue);
+
+const vm = app.mount('#app');
+
+export default vm;
