@@ -2,6 +2,7 @@
   <div>
     <header-component></header-component>
     <Button icon="pi pi-check" aria-label="Submit" />
+    <p>{{ message }}</p>
     <footer-component></footer-component>
   </div>
 </template>
@@ -11,12 +12,28 @@ import HeaderComponent from "./components/HeaderComponent.vue";
 import FooterComponent from "./components/FooterComponent.vue";
 
 import Button from "primevue/button";
+import axios from "axios";
 export default {
   name: "App",
   components: {
     HeaderComponent,
     FooterComponent,
     Button,
+  },
+  data() {
+    return {
+      message: "",
+    };
+  },
+  mounted() {
+    axios
+      .get("/data")
+      .then((response) => {
+        this.message = response.data.message;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   },
 };
 </script>
