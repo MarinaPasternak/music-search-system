@@ -1,8 +1,10 @@
 <template>
   <div>
     <header-component></header-component>
-    <Button icon="pi pi-check" aria-label="Submit" />
-    <p>{{ message }}</p>
+    <div class="main-section">
+      <Button icon="pi pi-check" aria-label="Submit" />
+      <p>{{ message }}</p>
+    </div>
     <footer-component></footer-component>
   </div>
 </template>
@@ -38,4 +40,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.main-section {
+  padding: 1rem;
+}
+</style>
