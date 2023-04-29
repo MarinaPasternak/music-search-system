@@ -1,5 +1,5 @@
 <template>
-  <div class="log-in-container">
+  <div class="sign-in-container">
     <h2 class="gradient">Sign In</h2>
     <div class="form-container">
       <div class="email-input-group input-group">
@@ -19,7 +19,10 @@
         </div>
       </div>
       <p>
-        Do not have an account? <span class="link-to-form">Create one!</span>
+        Do not have an account?
+        <router-link to="/sign-up"
+          ><span class="link-to-form">Create one!</span></router-link
+        >
       </p>
       <button class="primary-button">Continue</button>
     </div>
@@ -40,7 +43,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/styles/main.scss";
 
-.log-in-container {
+.sign-in-container {
   width: 40%;
   height: fit-content;
   margin: auto;

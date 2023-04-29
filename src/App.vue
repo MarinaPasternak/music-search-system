@@ -2,8 +2,7 @@
   <div class="secation">
     <header-component></header-component>
     <div class="main-section">
-      <sign-in-form></sign-in-form>
-      <sign-up-form></sign-up-form>
+      <router-view />
     </div>
     <footer-component></footer-component>
   </div>
@@ -12,16 +11,12 @@
 <script>
 import HeaderComponent from "./components/HeaderComponent.vue";
 import FooterComponent from "./components/FooterComponent.vue";
-import SignUpForm from "./views/signUp/SignUpForm.vue";
-import SignInForm from "./views/signIn/SignInForm.vue";
 
 export default {
   name: "App",
   components: {
     HeaderComponent,
     FooterComponent,
-    SignUpForm,
-    SignInForm,
   },
 };
 </script>

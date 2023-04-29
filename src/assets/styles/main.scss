@@ -13,7 +13,7 @@ body {
     background: linear-gradient(to right, $primary-color, $purple-color);
     background-size: 200% 100%;
     animation: gradient 5s ease-in-out infinite;
-  }
+}
   
 @keyframes gradient {
     0% {
@@ -25,6 +25,12 @@ body {
     100% {
       background-position: 0% 0%;
     }
+}
+
+.gradient-title {
+    background: linear-gradient(to right, $purple-color, $primary-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 h2.gradient {
