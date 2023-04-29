@@ -1,8 +1,11 @@
 import { createApp, h } from 'vue';
-import App from './App.vue';
-import PrimeVue from 'primevue/config';
-import { routes } from './router/index.js';
 import { createRouter, createWebHistory } from 'vue-router';
+import { routes } from './router/index.js';
+
+import App from './App.vue';
+import firebase from 'firebase';
+import PrimeVue from 'primevue/config';
+
 import 'bootstrap/dist/css/bootstrap.css';
 import './assets/styles/main.scss';
 import 'primevue/resources/themes/md-dark-deeppurple/theme.css';     
@@ -21,6 +24,18 @@ export const router = createRouter({
     history: createWebHistory(),
     routes
 });
+
+const firebaseConfig = {
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
+    measurementId: process.env.FIREBASE_MEASURMENT_ID
+};
+
+firebase.initializeApp(firebaseConfig);
 
 app.config.productionTip = false;
 
