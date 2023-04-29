@@ -8,8 +8,9 @@ export default {};
 
 <style lang="scss" scoped>
 @import "@/assets/styles/main.scss";
+
 .footer {
-  position: absolute;
+  position: fixed;
   width: 100%;
   bottom: 0;
   padding: 1rem;

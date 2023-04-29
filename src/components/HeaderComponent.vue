@@ -9,7 +9,9 @@ export default {};
 <style lang="scss" scoped>
 @import "@/assets/styles/main.scss";
 .header {
+  position: fixed;
   padding: 1rem;
+  width: 100%;
   background-color: $secondary-color;
 
   p {
