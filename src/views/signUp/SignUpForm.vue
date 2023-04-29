@@ -1,7 +1,15 @@
 <template>
   <div class="log-in-container">
-    <h2 class="gradient">Log In</h2>
+    <h2 class="gradient">Sign Up</h2>
     <div class="form-container">
+      <div class="full-name-input-group input-group">
+        <div class="p-inputgroup flex-1">
+          <span class="p-inputgroup-addon">
+            <i class="pi pi-user"></i>
+          </span>
+          <InputText placeholder="Full name" />
+        </div>
+      </div>
       <div class="email-input-group input-group">
         <div class="p-inputgroup flex-1">
           <span class="p-inputgroup-addon">
@@ -10,7 +18,7 @@
           <InputText placeholder="Email" />
         </div>
       </div>
-      <div class="email-input-group input-group">
+      <div class="password-input-group input-group">
         <div class="p-inputgroup flex-1">
           <span class="p-inputgroup-addon">
             <i class="pi pi-key"></i>
@@ -18,9 +26,15 @@
           <InputText placeholder="Password" />
         </div>
       </div>
-      <p>
-        Do not have an account? <span class="link-to-form">Create one!</span>
-      </p>
+      <div class="password-confirm-input-group input-group">
+        <div class="p-inputgroup flex-1">
+          <span class="p-inputgroup-addon">
+            <i class="pi pi-key"></i>
+          </span>
+          <InputText placeholder="Password Confirm" />
+        </div>
+      </div>
+      <p>Already have an account <span class="link-to-form">Sign In</span></p>
       <button class="primary-button">Continue</button>
     </div>
   </div>
@@ -30,7 +44,7 @@
 import InputText from "primevue/inputtext";
 
 export default {
-  name: "LogIn",
+  name: "SugnUpForm",
   components: {
     InputText,
   },

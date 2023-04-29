@@ -2,8 +2,8 @@
   <div class="secation">
     <header-component></header-component>
     <div class="main-section">
-      <log-in-form></log-in-form>
-      <registration-form></registration-form>
+      <sign-in-form></sign-in-form>
+      <sign-up-form></sign-up-form>
     </div>
     <footer-component></footer-component>
   </div>
@@ -12,16 +12,16 @@
 <script>
 import HeaderComponent from "./components/HeaderComponent.vue";
 import FooterComponent from "./components/FooterComponent.vue";
-import RegistrationForm from "./views/registration/RegistrationForm.vue";
-import LogInForm from "./views/logIn/LogInForm.vue";
+import SignUpForm from "./views/signUp/SignUpForm.vue";
+import SignInForm from "./views/signIn/SignInForm.vue";
 
 export default {
   name: "App",
   components: {
     HeaderComponent,
     FooterComponent,
-    RegistrationForm,
-    LogInForm,
+    SignUpForm,
+    SignInForm,
   },
 };
 </script>
