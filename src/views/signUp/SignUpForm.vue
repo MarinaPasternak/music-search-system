@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase/init";
 import { notify } from "@kyvg/vue3-notification";
 
@@ -105,7 +105,6 @@ export default {
     InputText,
     Password,
   },
-  emits: ["loggedIn"],
   data() {
     return {
       fullName: "",
@@ -182,6 +181,9 @@ export default {
     signUp() {
       createUserWithEmailAndPassword(auth, this.email, this.password)
         .then((credential) => {
+          updateProfile(auth.currentUser, {
+            displayName: this.fullName,
+          });
           notify({
             title: "Authorization",
             text: "You have been logged in!",
