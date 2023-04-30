@@ -94,6 +94,7 @@
 <script>
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/init";
+import { notify } from "@kyvg/vue3-notification";
 
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
@@ -181,10 +182,18 @@ export default {
     signUp() {
       createUserWithEmailAndPassword(auth, this.email, this.password)
         .then((credential) => {
+          notify({
+            title: "Authorization",
+            text: "You have been logged in!",
+          });
           console.log(credential.user);
         })
         .catch((error) => {
-          console.log(error.message);
+          notify({
+            type: "error",
+            title: "You have not signed up!",
+            text: `${error.message}`,
+          });
         });
     },
   },

@@ -4,6 +4,7 @@ import { routes } from './router/index.js';
 
 import App from './App.vue';
 import PrimeVue from 'primevue/config';
+import Notifications from '@kyvg/vue3-notification'
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './assets/styles/main.scss';
@@ -27,6 +28,7 @@ const router = createRouter({
 app.config.productionTip = false;
 
 app.use(PrimeVue);
+app.use(Notifications)
 app.use(router);
 
 const vm = app.mount('#app');

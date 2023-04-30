@@ -93,3 +93,25 @@ span.p-invalid {
     color: $error-color;
   }
 }
+
+.vue-notification {
+  padding: 1rem;
+  font-size: 1rem;
+  background: $primary-color;
+  border-left: 5px solid $primary-color;
+
+  &.success {
+    background: $success-color;
+    border-left-color: $success-color;
+  }
+
+  &.warn {
+    background: $warn-color;
+    border-left-color: $warn-color;
+  }
+
+  &.error {
+    background: $error-color;
+    border-left-color: $error-color;
+  }
+}

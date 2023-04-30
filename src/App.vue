@@ -5,6 +5,7 @@
       <router-view />
     </div>
     <footer-component></footer-component>
+    <notifications />
   </div>
 </template>
 
