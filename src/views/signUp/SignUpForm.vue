@@ -3,35 +3,79 @@
     <h2 class="gradient">Sign Up</h2>
     <div class="form-container">
       <div class="full-name-input-group input-group">
-        <div class="p-inputgroup flex-1">
-          <span class="p-inputgroup-addon">
-            <i class="pi pi-user"></i>
-          </span>
-          <InputText placeholder="Full name" />
+        <div class="p-inputgroup">
+          <div class="flex-container">
+            <span
+              class="p-inputgroup-addon"
+              :class="{ 'p-invalid': fullNameError }"
+            >
+              <i class="pi pi-user"></i>
+            </span>
+            <InputText
+              placeholder="Full name"
+              v-model="fullName"
+              :class="{ 'p-invalid': fullNameError }"
+              @blur="touched.fullName = true"
+            />
+          </div>
+          <small class="p-invalid">{{ fullNameError }}</small>
         </div>
       </div>
       <div class="email-input-group input-group">
-        <div class="p-inputgroup flex-1">
-          <span class="p-inputgroup-addon">
-            <i class="pi pi-at"></i>
-          </span>
-          <InputText placeholder="Email" />
+        <div class="p-inputgroup">
+          <div class="flex-container">
+            <span
+              class="p-inputgroup-addon"
+              :class="{ 'p-invalid': emailError }"
+            >
+              <i class="pi pi-at"></i>
+            </span>
+            <InputText
+              placeholder="Email"
+              v-model="email"
+              :class="{ 'p-invalid': emailError }"
+              @blur="touched.email = true"
+            />
+          </div>
+          <small class="p-invalid">{{ emailError }}</small>
         </div>
       </div>
       <div class="password-input-group input-group">
-        <div class="p-inputgroup flex-1">
-          <span class="p-inputgroup-addon">
-            <i class="pi pi-key"></i>
-          </span>
-          <InputText placeholder="Password" />
+        <div class="p-inputgroup">
+          <div class="flex-container">
+            <span
+              class="p-inputgroup-addon"
+              :class="{ 'p-invalid': passwordError }"
+            >
+              <i class="pi pi-key"></i>
+            </span>
+            <Password
+              placeholder="Password"
+              v-model="password"
+              :class="{ 'p-invalid': passwordError }"
+              @blur="touched.password = true"
+            />
+          </div>
+          <small class="p-invalid">{{ passwordError }}</small>
         </div>
       </div>
       <div class="password-confirm-input-group input-group">
-        <div class="p-inputgroup flex-1">
-          <span class="p-inputgroup-addon">
-            <i class="pi pi-key"></i>
-          </span>
-          <InputText placeholder="Password Confirm" />
+        <div class="p-inputgroup">
+          <div class="flex-container">
+            <span
+              class="p-inputgroup-addon"
+              :class="{ 'p-invalid': confirmPasswordError }"
+            >
+              <i class="pi pi-key"></i>
+            </span>
+            <Password
+              placeholder="Password Confirm"
+              v-model="confirmPassword"
+              :class="{ 'p-invalid': confirmPasswordError }"
+              @blur="touched.confirmPassword = true"
+            />
+          </div>
+          <small class="p-invalid">{{ confirmPasswordError }}</small>
         </div>
       </div>
       <p>
@@ -40,18 +84,92 @@
           ><span class="link-to-form">Sign In</span></router-link
         >
       </p>
-      <button class="primary-button">Continue</button>
+      <button class="primary-button" :disabled="isFormInvalid">Continue</button>
     </div>
   </div>
 </template>
 
 <script>
 import InputText from "primevue/inputtext";
+import Password from "primevue/password";
 
 export default {
   name: "SugnUpForm",
   components: {
     InputText,
+    Password,
+  },
+  data() {
+    return {
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      touched: {
+        fullName: false,
+        email: false,
+        password: false,
+        confirmPassword: false,
+      },
+    };
+  },
+  computed: {
+    fullNameError() {
+      const fullNameRegex = /^[A-Za-z\s]+$/;
+      if (!this.touched.fullName) return "";
+      if (!this.fullName) return "Full Name is required.";
+      if (this.fullName.length < 5)
+        return "Full name must be at least 5 characters.";
+      if (!fullNameRegex.test(this.fullName))
+        return "Full Name can only contain letters and spaces.";
+
+      return "";
+    },
+    emailError() {
+      const emailRegex = /\S+@\S+\.\S+/;
+      if (!this.touched.email) return "";
+      if (!this.email) return "Email is required.";
+      if (!emailRegex.test(this.email)) return "Email is invalid.";
+
+      return "";
+    },
+    passwordError() {
+      if (!this.touched.password) return "";
+      if (!this.password) return "Password is required.";
+      if (this.password.length < 6)
+        return "Password must be at least 6 characters.";
+
+      return "";
+    },
+    confirmPasswordError() {
+      if (!this.touched.confirmPassword) return "";
+      if (!this.confirmPassword) return "Confirm Password is required.";
+      if (this.confirmPassword !== this.password)
+        return "Confirm Password must match Password.";
+
+      return "";
+    },
+    isFormInvalid() {
+      const errorMessage =
+        this.fullNameError ||
+        this.emailError ||
+        this.passwordError ||
+        this.confirmPasswordError;
+
+      const isFormTouched =
+        this.touched.fullName &
+        this.touched.email &
+        this.touched.password &
+        this.touched.confirmPassword;
+
+      if (errorMessage.length > 0) {
+        return true;
+      } else if (isFormTouched && errorMessage.length === 0) {
+        return false;
+      }
+
+      return true;
+    },
   },
 };
 </script>
@@ -80,6 +198,28 @@ export default {
 
   .primary-button {
     width: 60%;
+  }
+}
+
+.p-inputgroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-container {
+  display: flex;
+}
+
+small.p-invalid {
+  margin-top: 5px;
+  color: $error-color;
+}
+
+span.p-invalid {
+  border-color: $error-color;
+
+  i {
+    color: $error-color;
   }
 }
 </style>

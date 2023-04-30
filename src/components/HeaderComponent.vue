@@ -1,5 +1,7 @@
 <template>
-  <div class="header"><p>Auth</p></div>
+  <div class="header">
+    <button class="primary-button">Log Out</button>
+  </div>
 </template>
 
 <script>
