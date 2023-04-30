@@ -1,4 +1,18 @@
-# music-search-system
+# Music Search System
+
+##Technologies Used
+ - Vue.js
+ - Vue Router
+ - Vuex
+ - Axios
+ - PrimeVue
+ - Vue3 Notification
+
+
+Install the dependencies.
+npm install
+Start the development server.
+npm run serve
 
 ## Project setup
 ```
