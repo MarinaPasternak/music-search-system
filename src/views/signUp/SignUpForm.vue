@@ -84,12 +84,17 @@
           ><span class="link-to-form">Sign In</span></router-link
         >
       </p>
-      <button class="primary-button" :disabled="isFormInvalid">Continue</button>
+      <button class="primary-button" :disabled="isFormInvalid" @click="signUp">
+        Continue
+      </button>
     </div>
   </div>
 </template>
 
 <script>
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase/init";
+
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 
@@ -99,6 +104,7 @@ export default {
     InputText,
     Password,
   },
+  emits: ["loggedIn"],
   data() {
     return {
       fullName: "",
@@ -169,6 +175,17 @@ export default {
       }
 
       return true;
+    },
+  },
+  methods: {
+    signUp() {
+      createUserWithEmailAndPassword(auth, this.email, this.password)
+        .then((credential) => {
+          console.log(credential.user);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
     },
   },
 };
