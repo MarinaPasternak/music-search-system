@@ -80,3 +80,16 @@ h2.gradient {
         color: $purple-color;
     }
 }
+
+small.p-invalid {
+  margin-top: 5px;
+  color: $error-color;
+}
+
+span.p-invalid {
+  border-color: $error-color;
+
+  i {
+    color: $error-color;
+  }
+}

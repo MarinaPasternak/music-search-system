@@ -209,17 +209,4 @@ export default {
 .flex-container {
   display: flex;
 }
-
-small.p-invalid {
-  margin-top: 5px;
-  color: $error-color;
-}
-
-span.p-invalid {
-  border-color: $error-color;
-
-  i {
-    color: $error-color;
-  }
-}
 </style>
