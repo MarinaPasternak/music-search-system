@@ -180,7 +180,7 @@ export default {
   methods: {
     signUp() {
       createUserWithEmailAndPassword(auth, this.email, this.password)
-        .then((credential) => {
+        .then(() => {
           updateProfile(auth.currentUser, {
             displayName: this.fullName,
           });
@@ -188,7 +188,7 @@ export default {
             title: "Authorization",
             text: "You have been logged in!",
           });
-          console.log(credential.user);
+          this.$router.push({ path: "/" });
         })
         .catch((error) => {
           notify({
