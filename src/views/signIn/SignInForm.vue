@@ -46,12 +46,18 @@
           ><span class="link-to-form">Create one!</span></router-link
         >
       </p>
-      <button class="primary-button" :disabled="isFormInvalid">Continue</button>
+      <button class="primary-button" :disabled="isFormInvalid" @click="logIn">
+        Continue
+      </button>
     </div>
   </div>
 </template>
 
 <script>
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase/init";
+import { notify } from "@kyvg/vue3-notification";
+
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 
@@ -99,6 +105,25 @@ export default {
       }
 
       return true;
+    },
+  },
+  methods: {
+    logIn() {
+      signInWithEmailAndPassword(auth, this.email, this.password)
+        .then(() => {
+          notify({
+            title: "Sign In",
+            text: "You have been logged in!",
+          });
+          this.$router.push({ path: "/" });
+        })
+        .catch((error) => {
+          notify({
+            type: "error",
+            title: "You have not signed in!",
+            text: `${error.message}`,
+          });
+        });
     },
   },
 };

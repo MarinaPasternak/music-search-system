@@ -186,7 +186,7 @@ export default {
           });
           notify({
             title: "Authorization",
-            text: "You have been logged in!",
+            text: "You have been registered!",
           });
           this.$router.push({ path: "/" });
         })
