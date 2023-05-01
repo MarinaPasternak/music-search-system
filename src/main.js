@@ -1,6 +1,7 @@
 import { createApp, h } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import { routes } from './router/index.js';
+import store from './store/index.js'
 
 import App from './App.vue';
 import PrimeVue from 'primevue/config';
@@ -30,6 +31,7 @@ app.config.productionTip = false;
 app.use(PrimeVue);
 app.use(Notifications)
 app.use(router);
+app.use(store);
 
 const vm = app.mount('#app');
 
