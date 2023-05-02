@@ -4,6 +4,7 @@
     <button class="primary-button" @click="redirectToStatisticPage">
       See Statistic
     </button>
+    <top-artist-component></top-artist-component>
     <top-tracks-chart-component></top-tracks-chart-component>
   </div>
 </template>
@@ -12,12 +13,14 @@
 import { auth } from "../../firebase/init";
 
 import TopTracksChartComponent from "./components/TopTracksChartComponent.vue";
+import TopArtistComponent from "./components/TopArtistComponent.vue";
 import { notify } from "@kyvg/vue3-notification";
 
 export default {
   name: "SearchMusicComponent",
   components: {
     TopTracksChartComponent,
+    TopArtistComponent,
   },
   data() {
     return {
