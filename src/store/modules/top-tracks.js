@@ -15,7 +15,10 @@ export default {
     async fetchTopTracks({ commit }) {
       try {
         const response = await axios.get(`http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=${API_KEY}&format=json`)
-        const topTracks = response.data.tracks.track
+        const topTracks = response.data.tracks.track;
+
+        topTracks.sort((a, b) => b.playcount - a.playcount);
+
         commit('SET_TOP_TRACKS', topTracks)
       } catch (error) {
         console.error(error)
