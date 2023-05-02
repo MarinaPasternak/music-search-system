@@ -7,7 +7,6 @@
     <template v-else>
       <div class="color-square"></div>
     </template>
-
     <div class="track-information">
       <h4>
         <span

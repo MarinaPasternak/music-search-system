@@ -1,7 +1,9 @@
 <template>
   <div class="music-search-container">
-    <h1>{{ fullName }}</h1>
-    <button class="primary-button">See Statistic</button>
+    <h1 class="gradient-title">{{ fullName }}</h1>
+    <button class="primary-button" @click="redirectToStatisticPage">
+      See Statistic
+    </button>
     <top-tracks-chart-component></top-tracks-chart-component>
   </div>
 </template>
@@ -10,6 +12,7 @@
 import { auth } from "../../firebase/init";
 
 import TopTracksChartComponent from "./components/TopTracksChartComponent.vue";
+import { notify } from "@kyvg/vue3-notification";
 
 export default {
   name: "SearchMusicComponent",
@@ -30,6 +33,17 @@ export default {
           this.fullName = "Welcome, Dear Guest";
         }
       });
+    },
+    redirectToStatisticPage() {
+      if (!auth.currentUser) {
+        notify({
+          type: "error",
+          title: "You are not authorised",
+          text: "You are redirected to Home page",
+        });
+      }
+
+      this.$router.push({ path: "/statistic" });
     },
   },
   created() {

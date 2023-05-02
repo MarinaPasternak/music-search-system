@@ -21,9 +21,7 @@ export const routes = [
         path: '/statistic',
         name: 'statistic',
         component: StatisticComponent,
-        meta: {
-            auth: true
-         }
+        meta: { requiresAuth: true }
     }, {
         path: '/:pathMatch(.*)*',
         name: 'not-found',

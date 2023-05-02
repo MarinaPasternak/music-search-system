@@ -2,6 +2,7 @@ import { createApp, h } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import { routes } from './router/index.js';
 import store from './store/index.js'
+import { auth } from './firebase/init.js'
 
 import App from './App.vue';
 import PrimeVue from 'primevue/config';
@@ -32,6 +33,16 @@ app.use(PrimeVue);
 app.use(Notifications)
 app.use(router);
 app.use(store);
+
+router.beforeEach((to, from, next) => {
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    const isAuthenticated = auth.currentUser;
+    if (requiresAuth && !isAuthenticated) {
+        next("/");
+    } else {
+        next();
+    }
+});
 
 const vm = app.mount('#app');
 
