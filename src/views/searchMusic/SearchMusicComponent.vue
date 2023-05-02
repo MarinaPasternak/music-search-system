@@ -5,6 +5,7 @@
       See Statistic
     </button>
     <top-artist-component></top-artist-component>
+    <top-tags-component></top-tags-component>
     <top-tracks-chart-component></top-tracks-chart-component>
   </div>
 </template>
@@ -14,6 +15,7 @@ import { auth } from "../../firebase/init";
 
 import TopTracksChartComponent from "./components/TopTracksChartComponent.vue";
 import TopArtistComponent from "./components/TopArtistComponent.vue";
+import TopTagsComponent from "./components/TopTagsComponent.vue";
 import { notify } from "@kyvg/vue3-notification";
 
 export default {
@@ -21,6 +23,7 @@ export default {
   components: {
     TopTracksChartComponent,
     TopArtistComponent,
+    TopTagsComponent,
   },
   data() {
     return {
