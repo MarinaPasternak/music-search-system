@@ -1,23 +1,44 @@
 <template>
-  <div class="track-card">
-    <p>{{ postionInChart + 1 }}.</p>
-    <img :src="track.image[0]['#text']" :alt="track.name" />
+  <div class="track-card" v-if="track">
+    <p>{{ postionInChart }}.</p>
+    <template v-if="track.album">
+      <img :src="track.album.image[0]['#text']" :alt="track.name" />
+    </template>
+    <template v-else>
+      <div class="color-square"></div>
+    </template>
+
     <div class="track-information">
       <h4>
         <span
-          ><a :href="track.artist.url">{{ track.artist.name }}</a></span
+          ><a :href="track.artist.url">{{ artistName }}</a></span
         >
         - {{ track.name }}
       </h4>
-      <div class="track-description">{{ playcountCut }}</div>
+      <div class="track-description">
+        <p>{{ playcountCut }}</p>
+        <badge v-for="tagName in topTags" :key="tagName" :value="tagName" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import Badge from "primevue/badge";
+import axios from "axios";
+const API_KEY = process.env.VUE_APP_LAST_FM_API_KEY;
+
 export default {
   name: "TrackCard",
-  props: ["postionInChart", "track"],
+  props: ["trackName", "artistName", "postionInChart"],
+  components: {
+    Badge,
+  },
+  data() {
+    return {
+      track: null,
+    };
+  },
   computed: {
     playcountCut() {
       if (this.track.playcount >= 1000000000) {
@@ -39,6 +60,24 @@ export default {
 
       return this.track.playcount;
     },
+    topTags() {
+      if (this.track.toptags.tag.length === 0) {
+        return ["no tags rigth now"];
+      }
+      return this.track.toptags.tag.map((item) => item.name);
+    },
+  },
+  methods: {
+    async fetchTrackInformation() {
+      const response = await axios.get(
+        `https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=${API_KEY}&artist=${this.artistName}&track=${this.trackName}&format=json`
+      );
+
+      this.track = response.data.track;
+    },
+  },
+  created() {
+    this.fetchTrackInformation();
   },
 };
 </script>
@@ -55,11 +94,35 @@ export default {
   }
 
   img {
+    width: 60px;
     margin: 0 1.5rem;
   }
 
   h4 a:hover {
     color: $primary-color;
   }
+}
+
+.track-description {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  color: $white-color;
+
+  p {
+    width: 50px;
+    margin: 0 1rem;
+  }
+
+  .p-badge {
+    margin: 0 5px;
+  }
+}
+
+.color-square {
+  height: 60px;
+  width: 60px;
+  margin: 0 1.5rem;
+  background-color: $secondary-color;
 }
 </style>

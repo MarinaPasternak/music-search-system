@@ -17,7 +17,7 @@ export default {
         const response = await axios.get(`http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=${API_KEY}&format=json`)
         const topTracks = response.data.tracks.track;
 
-        topTracks.sort((a, b) => b.playcount - a.playcount);
+        topTracks.sort((a, b) => Number(b.playcount) - Number(a.playcount));
 
         commit('SET_TOP_TRACKS', topTracks)
       } catch (error) {

@@ -3,7 +3,7 @@ import topTracksModule from './modules/top-tracks'
 
 const store = createStore({
   modules: {
-    topTracks: topTracksModule
+    topTracks: topTracksModule,
   },
 })
 

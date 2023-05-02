@@ -5,9 +5,10 @@
       <div class="flex-container">
         <track-card
           v-for="(track, index) in pagedTopTracks"
-          :key="index"
-          :postionInChart="index + offset"
-          :track="track"
+          :key="track.url"
+          :postionInChart="index + offset + 1"
+          :trackName="track.name"
+          :artistName="track.artist.name"
         ></track-card>
       </div>
       <Paginator
@@ -26,7 +27,6 @@
 import { mapState, mapActions } from "vuex";
 import TrackCard from "@/components/TrackCard.vue";
 import Paginator from "primevue/paginator";
-
 export default {
   name: "TopTracksChartComponent",
   components: {
@@ -71,6 +71,7 @@ export default {
 
 .chart-container {
   margin-bottom: 130px;
+  padding-bottom: 130px;
 
   h2 {
     margin-top: 3rem;
