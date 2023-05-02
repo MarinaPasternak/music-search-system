@@ -44,6 +44,8 @@ export default {
 @import "@/assets/styles/main.scss";
 
 .music-search-container {
+  width: 100%;
+  margin: 2rem;
   margin-top: 130px;
 }
 </style>
