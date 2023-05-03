@@ -1,24 +1,29 @@
 <template>
-  <div v-if="topTracks">
+  <div>
     <div class="chart-container">
       <h2 class="gradient-title">Top 50 Global</h2>
-      <div class="flex-container">
-        <track-card
-          v-for="(track, index) in pagedTopTracks"
-          :key="track.url"
-          :postionInChart="index + offset + 1"
-          :trackName="track.name"
-          :artistName="track.artist.name"
-        ></track-card>
-      </div>
-      <Paginator
-        class="paginator"
-        :first="offset"
-        :rows="10"
-        :totalRecords="topTracks.length"
-        template="FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
-        @page="onPageChangeHandler"
-      />
+      <template v-if="isTopTracksLoading">
+        <loading-component></loading-component>
+      </template>
+      <template v-else-if="topTracks">
+        <div class="flex-container">
+          <track-card
+            v-for="(track, index) in pagedTopTracks"
+            :key="track.url"
+            :postionInChart="index + offset + 1"
+            :trackName="track.name"
+            :artistName="track.artist.name"
+          ></track-card>
+        </div>
+        <Paginator
+          class="paginator"
+          :first="offset"
+          :rows="10"
+          :totalRecords="topTracks.length"
+          template="FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+          @page="onPageChangeHandler"
+        />
+      </template>
     </div>
   </div>
 </template>
@@ -27,11 +32,13 @@
 import { mapState, mapActions } from "vuex";
 import TrackCard from "@/components/TrackCard.vue";
 import Paginator from "primevue/paginator";
+import LoadingComponent from "@/components/LoadingComponent.vue";
 export default {
   name: "TopTracksChartComponent",
   components: {
     TrackCard,
     Paginator,
+    LoadingComponent,
   },
   data() {
     return {
@@ -42,6 +49,7 @@ export default {
   computed: {
     ...mapState({
       topTracks: (state) => state.topTracks.topTracks,
+      isTopTracksLoading: (state) => state.topTracks.loading,
     }),
     pagedTopTracks() {
       return this.topTracks.slice(this.offset, this.offset + this.rowsPerPage);

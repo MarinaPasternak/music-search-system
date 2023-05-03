@@ -1,7 +1,11 @@
 <template>
   <div class="top-artist-container">
     <h2 class="gradient-title">Top 10 Artists</h2>
-    <div class="flex-container" v-if="topArtists">
+    <template v-if="isTopArtistsLoading">
+      <loading-component></loading-component>
+    </template>
+    <template v-else-if="topArtists"></template>
+    <div class="flex-container">
       <div
         v-for="(artist, index) in topArtists"
         :key="index"
@@ -23,10 +27,15 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+import LoadingComponent from "@/components/LoadingComponent.vue";
 export default {
+  components: {
+    LoadingComponent,
+  },
   computed: {
     ...mapState({
       topArtists: (state) => state.topArtists.topArtists,
+      isTopArtistsLoading: (state) => state.topArtists.loading,
     }),
   },
   methods: {

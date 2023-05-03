@@ -1,21 +1,27 @@
 <template>
   <div class="top-tags-container">
     <h2 class="gradient-title">Moods & genres</h2>
-    <div class="flex-container" v-if="topTags">
-      <div v-for="(tag, index) in topTags" :key="index" class="tags-list">
-        <Button
-          :label="tag.name"
-          :severity="severity[severityRandomNumber()]"
-          raised
-        />
+    <template v-if="isTopTags">
+      <loading-component></loading-component>
+    </template>
+    <template v-else-if="topTags">
+      <div class="flex-container">
+        <div v-for="(tag, index) in topTags" :key="index" class="tags-list">
+          <Button
+            :label="tag.name"
+            :severity="severity[severityRandomNumber()]"
+            raised
+          />
+        </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
 import Button from "primevue/button";
+import LoadingComponent from "@/components/LoadingComponent.vue";
 export default {
   data() {
     return {
@@ -24,10 +30,12 @@ export default {
   },
   components: {
     Button,
+    LoadingComponent,
   },
   computed: {
     ...mapState({
       topTags: (state) => state.topTags.topTags,
+      isTopTags: (state) => state.topTags.loading,
     }),
   },
   methods: {
