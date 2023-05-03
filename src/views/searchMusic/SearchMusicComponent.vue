@@ -1,6 +1,12 @@
 <template>
   <div class="music-search-container">
     <h1 class="gradient-title">{{ fullName }}</h1>
+    <div class="searcher-container">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search" />
+        <InputText v-model="value1" placeholder="Search" />
+      </span>
+    </div>
     <button class="primary-button" @click="redirectToStatisticPage">
       See Statistic
     </button>
@@ -16,6 +22,7 @@ import { auth } from "../../firebase/init";
 import TopTracksChartComponent from "./components/TopTracksChartComponent.vue";
 import TopArtistComponent from "./components/TopArtistComponent.vue";
 import TopTagsComponent from "./components/TopTagsComponent.vue";
+import InputText from "primevue/inputtext";
 import { notify } from "@kyvg/vue3-notification";
 
 export default {
@@ -24,6 +31,7 @@ export default {
     TopTracksChartComponent,
     TopArtistComponent,
     TopTagsComponent,
+    InputText,
   },
   data() {
     return {
@@ -70,6 +78,15 @@ export default {
 
   h1 {
     text-align: center;
+  }
+}
+
+.searcher-container {
+  margin-top: 2rem;
+  text-align: center;
+
+  input {
+    width: 600px;
   }
 }
 </style>
