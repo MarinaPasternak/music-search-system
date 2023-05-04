@@ -15,6 +15,7 @@ export default {};
   bottom: 0;
   padding: 1rem;
   background-color: $secondary-color;
+  z-index: 10000;
 
   p {
     margin: 0;

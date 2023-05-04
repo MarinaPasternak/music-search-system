@@ -13,6 +13,7 @@
             :postionInChart="index + offset + 1"
             :trackName="track.name"
             :artistName="track.artist.name"
+            :trackSearched="null"
           ></track-card>
         </div>
         <Paginator

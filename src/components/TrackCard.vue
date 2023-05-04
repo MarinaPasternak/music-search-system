@@ -29,7 +29,7 @@ const API_KEY = process.env.VUE_APP_LAST_FM_API_KEY;
 
 export default {
   name: "TrackCard",
-  props: ["trackName", "artistName", "postionInChart"],
+  props: ["trackName", "artistName", "postionInChart", "trackSearched"],
   components: {
     Badge,
   },
@@ -76,7 +76,11 @@ export default {
     },
   },
   created() {
-    this.fetchTrackInformation();
+    if (!this.trackSearched) {
+      this.fetchTrackInformation();
+    } else {
+      this.track = this.trackSearched;
+    }
   },
 };
 </script>

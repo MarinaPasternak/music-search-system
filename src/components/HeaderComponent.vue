@@ -52,6 +52,7 @@ export default {
   width: 100%;
   text-align: right;
   background-color: $secondary-color;
+  z-index: 10000;
 
   p {
     margin: 0;
