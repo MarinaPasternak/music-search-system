@@ -2,7 +2,12 @@
   <div class="music-search-component">
     <div class="searcher-container">
       <InputText v-model="query" placeholder="Search for a song" />
-      <Button @click="searchSongs" icon="pi pi-search" size="large"></Button>
+      <Button
+        @click="searchSongs"
+        icon="pi pi-search"
+        size="large"
+        :disabled="!query"
+      ></Button>
     </div>
     <template v-if="loading">
       <loading-component></loading-component>
