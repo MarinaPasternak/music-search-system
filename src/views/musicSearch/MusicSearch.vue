@@ -98,7 +98,7 @@ export default {
       try {
         // Search for tracks on Last.fm
         const response = await axios.get(
-          `https://ws.audioscrobbler.com/2.0/?method=track.search&track=${this.query}&api_key=${API_KEY}&limit='8000'&format=json`
+          `https://ws.audioscrobbler.com/2.0/?method=track.search&track=${this.query}&api_key=${API_KEY}&limit='10000'&format=json`
         );
         const tracks = response.data.results.trackmatches.track;
 

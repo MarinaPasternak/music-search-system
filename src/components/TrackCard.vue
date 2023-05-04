@@ -1,7 +1,7 @@
 <template>
   <div class="track-card" v-if="track">
     <p>{{ postionInChart }}.</p>
-    <template v-if="track.album">
+    <template v-if="track.album && track.album.image[0]['#text']">
       <img :src="track.album.image[0]['#text']" :alt="track.name" />
     </template>
     <template v-else>
