@@ -6,21 +6,18 @@
     </div>
     <footer-component></footer-component>
     <notifications />
-    <!-- <example-component></example-component> -->
   </div>
 </template>
 
 <script>
 import HeaderComponent from "./components/HeaderComponent.vue";
 import FooterComponent from "./components/FooterComponent.vue";
-// import ExampleComponent from "./views/ExampleCOMP.vue";
 
 export default {
   name: "App",
   components: {
     HeaderComponent,
     FooterComponent,
-    // ExampleComponent,
   },
 };
 </script>

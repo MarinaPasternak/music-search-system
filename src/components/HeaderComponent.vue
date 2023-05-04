@@ -10,6 +10,7 @@
 <script>
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/init";
+import { notify } from "@kyvg/vue3-notification";
 
 export default {
   data() {
@@ -30,6 +31,12 @@ export default {
     signOut() {
       signOut(auth).then(() => {
         this.isLoggedIn = false;
+
+        notify({
+          title: "Sign Out",
+          text: "You have been logged out!",
+        });
+
         this.$router.push({ path: "/" });
       });
     },
@@ -52,7 +59,7 @@ export default {
   width: 100%;
   text-align: right;
   background-color: $secondary-color;
-  z-index: 10000;
+  z-index: 800;
 
   p {
     margin: 0;
