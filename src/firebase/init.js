@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore }  from 'firebase/firestore'
+import { getFirestore, collection, doc, setDoc, getDoc } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
 
 const firebaseConfig = {
@@ -12,8 +12,36 @@ const firebaseConfig = {
     measurementId: process.env.VUE_APP_FIREBASE_MEASURMENT_ID
 };
 
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-export const firebaseStore = getFirestore()
+export const firebaseStore = getFirestore(app);
 
-export const auth = getAuth()
+export const auth = getAuth();
+
+export const user = auth.currentUser ? auth.currentUser : { uid: 'anonymous' };
+export let userId = user.uid;
+
+export const likedSongsAll = collection(firebaseStore, 'likedSongs');
+export let likedSongsByUserRef = doc(firebaseStore, "likedSongs", userId);
+
+export function updateUserId(newUserId) {
+    userId = newUserId;
+    likedSongsByUserRef = doc(firebaseStore, "likedSongs", userId);
+    console.log(userId);
+}
+
+console.log(userId);
+
+export async function addSongToLikedSongs(songTitle, artistName) {
+
+    let likedSongsByUser = [];
+    if ((await getDoc(likedSongsByUserRef)).data()) {
+        likedSongsByUser = (await getDoc(likedSongsByUserRef)).data().AllLikedSongs;
+    }
+
+  // Add the new song to the array
+  likedSongsByUser.push(`${songTitle}~${artistName}`);
+
+  // Update the document with the new array
+  await setDoc(likedSongsByUserRef, { AllLikedSongs: likedSongsByUser });
+}
