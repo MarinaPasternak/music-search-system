@@ -83,7 +83,7 @@ export default {
   padding-bottom: 130px;
 
   h2 {
-    margin-top: 3rem;
+    margin-bottom: 3rem;
   }
 }
 

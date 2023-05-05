@@ -1,8 +1,8 @@
 <template>
   <div class="music-search-container">
-    <liked-songs-component></liked-songs-component>
     <h1 class="gradient-title">{{ fullName }}</h1>
     <music-search :passedQuery="passedQuery"></music-search>
+    <liked-songs-component></liked-songs-component>
     <top-artist-component></top-artist-component>
     <top-tags-component @getTagName="searchByTag"></top-tags-component>
     <top-tracks-chart-component></top-tracks-chart-component>

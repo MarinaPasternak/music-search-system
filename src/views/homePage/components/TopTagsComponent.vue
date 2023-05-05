@@ -61,6 +61,7 @@ export default {
 
 .top-tags-container {
   margin: 2rem 0;
+  margin-bottom: 3rem;
 }
 
 .flex-container {

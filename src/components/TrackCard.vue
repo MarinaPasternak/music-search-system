@@ -1,19 +1,33 @@
 <template>
-  <div class="track-card" v-if="track" @click="rediractOnTrackInformation">
+  <div class="track-card" v-if="track">
     <p>{{ postionInChart }}.</p>
     <template v-if="track.album && track.album.image[0]['#text']">
-      <img :src="track.album.image[0]['#text']" :alt="track.name" />
+      <img
+        :src="track.album.image[0]['#text']"
+        :alt="track.name"
+        @click="rediractOnTrackInformation"
+      />
     </template>
     <template v-else>
-      <div class="color-square"></div>
+      <div class="color-square" @click="rediractOnTrackInformation"></div>
     </template>
     <div class="track-information">
-      <h4>
-        <span
-          ><a :href="track.artist.url">{{ artistName }}</a></span
-        >
-        - {{ track.name }}
-      </h4>
+      <div class="track-header">
+        <h4>
+          <span
+            ><a :href="track.artist.url">{{ artistName }}</a></span
+          >
+          - {{ track.name }}
+        </h4>
+        <Button
+          icon="pi pi-heart-fill"
+          class="like"
+          text
+          rounded
+          @click="likeSong()"
+          :disable="likeDisabled"
+        />
+      </div>
       <div class="track-description">
         <p>{{ playcountCut }}</p>
         <badge v-for="tagName in topTags" :key="tagName" :value="tagName" />
@@ -23,7 +37,11 @@
 </template>
 
 <script>
+import { addSongToLikedSongs } from "../firebase/init";
+import { notify } from "@kyvg/vue3-notification";
+
 import Badge from "primevue/badge";
+import Button from "primevue/button";
 import axios from "axios";
 const API_KEY = process.env.VUE_APP_LAST_FM_API_KEY;
 
@@ -32,10 +50,12 @@ export default {
   props: ["trackName", "artistName", "postionInChart", "trackSearched"],
   components: {
     Badge,
+    Button,
   },
   data() {
     return {
       track: null,
+      likeDisabled: false,
     };
   },
   computed: {
@@ -79,6 +99,26 @@ export default {
         name: "song",
         params: { artist: this.artistName, song: this.track.name },
       });
+    },
+    likeSong() {
+      // Add liked song to Firebase
+      addSongToLikedSongs(this.track.name, this.track.artist.name)
+        .then(() => {
+          this.likeDisabled = true;
+
+          notify({
+            title: "Liked!",
+            text: `You have laked ${this.track.name} by ${this.track.artist.name}`,
+          });
+        })
+        .catch((error) => {
+          notify({
+            type: "error",
+            title: "Error",
+            text: error,
+          });
+          console.error("Error adding document: ", error);
+        });
     },
   },
   created() {
@@ -134,5 +174,14 @@ export default {
   width: 60px;
   margin: 0 1.5rem;
   background-color: $secondary-color;
+}
+
+.track-header {
+  display: flex;
+  align-items: flex-end;
+}
+
+::v-deep span.pi-heart-fill {
+  color: $dark-purple-color;
 }
 </style>

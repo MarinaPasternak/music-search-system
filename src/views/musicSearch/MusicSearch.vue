@@ -16,7 +16,7 @@
       <h2 class="gradient-title">You haven't searched for a song yet</h2>
     </template>
     <template v-else-if="!loading && songs && songs.length > 0">
-      <div class="container">
+      <div>
         <h2 class="gradient-title">
           Your search results - {{ songs.length }} songs
         </h2>

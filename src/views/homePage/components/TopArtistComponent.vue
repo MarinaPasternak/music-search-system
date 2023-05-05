@@ -67,13 +67,14 @@ export default {
 
 .top-artist-container {
   margin: 2rem 0;
+  margin-bottom: 3rem;
 }
 
 .flex-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
 
   .artist-information {
     margin: 1rem;
