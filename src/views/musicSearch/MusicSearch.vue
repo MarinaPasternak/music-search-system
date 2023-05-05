@@ -93,6 +93,7 @@ export default {
       this.songs = null;
       this.loading = true;
       this.error = "";
+
       const API_KEY = process.env.VUE_APP_LAST_FM_API_KEY;
 
       try {
@@ -126,7 +127,7 @@ export default {
         const songs = songResponses.map((response) => response.data.track);
         const definedSongs = songs.filter((song) => song !== undefined);
 
-        // this.songs = definedSongs;
+        // this.songs = definedSongs; tags
         const tagResponse = await axios.get(
           `https://ws.audioscrobbler.com/2.0/?method=tag.getTopTracks&tag=${this.query}&api_key=${API_KEY}&limit=1000&format=json`
         );

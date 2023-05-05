@@ -1,5 +1,5 @@
 <template>
-  <div class="track-card" v-if="track">
+  <div class="track-card" v-if="track" @click="rediractOnTrackInformation">
     <p>{{ postionInChart }}.</p>
     <template v-if="track.album && track.album.image[0]['#text']">
       <img :src="track.album.image[0]['#text']" :alt="track.name" />
@@ -74,6 +74,12 @@ export default {
 
       this.track = response.data.track;
     },
+    rediractOnTrackInformation() {
+      this.$router.push({
+        name: "song",
+        params: { artist: this.artistName, song: this.track.name },
+      });
+    },
   },
   created() {
     if (!this.trackSearched) {
@@ -91,6 +97,7 @@ export default {
 .track-card {
   display: flex;
   margin-bottom: 1rem;
+  cursor: pointer;
 
   p {
     width: 20px;
