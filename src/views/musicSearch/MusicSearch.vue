@@ -62,6 +62,7 @@ import LoadingComponent from "@/components/LoadingComponent.vue";
 import TrackCard from "@/components/TrackCard.vue";
 export default {
   name: "MusicSearchComponent",
+  props: ["passedQuery"],
   components: {
     InputText,
     Button,
@@ -169,6 +170,15 @@ export default {
         this.error = "An error occurred while searching for songs.";
       } finally {
         this.loading = false;
+      }
+    },
+  },
+  watch: {
+    passedQuery(newPassedQuery) {
+      if (newPassedQuery && newPassedQuery.length > 0) {
+        this.query = newPassedQuery;
+        this.searchSongs();
+        window.scrollTo(0, 0);
       }
     },
   },

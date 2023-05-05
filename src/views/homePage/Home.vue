@@ -1,9 +1,9 @@
 <template>
   <div class="music-search-container">
     <h1 class="gradient-title">{{ fullName }}</h1>
-    <music-search></music-search>
+    <music-search :passedQuery="passedQuery"></music-search>
     <top-artist-component></top-artist-component>
-    <top-tags-component></top-tags-component>
+    <top-tags-component @getTagName="searchByTag"></top-tags-component>
     <top-tracks-chart-component></top-tracks-chart-component>
   </div>
 </template>
@@ -27,6 +27,7 @@ export default {
   data() {
     return {
       fullName: null,
+      passedQuery: null,
     };
   },
   methods: {
@@ -38,6 +39,9 @@ export default {
           this.fullName = "Welcome, Dear Guest";
         }
       });
+    },
+    searchByTag(tagName) {
+      this.passedQuery = tagName;
     },
   },
   created() {
