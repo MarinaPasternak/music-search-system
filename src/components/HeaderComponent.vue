@@ -37,7 +37,7 @@ export default {
           text: "You have been logged out!",
         });
 
-        this.$router.push({ path: "/" });
+        this.$router.go(0);
       });
     },
     signIn() {

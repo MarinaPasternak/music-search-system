@@ -30,11 +30,8 @@
 <script>
 import { likedSongsByUserRef } from "../../../firebase/init";
 import { onSnapshot } from "firebase/firestore";
-// import FuzzySet from "fuzzyset.js";
-// import axios from "axios";
 import TrackCard from "@/components/TrackCard.vue";
 import Paginator from "primevue/paginator";
-
 export default {
   components: { Paginator, TrackCard },
   name: "LikedSongsComponent",
@@ -55,52 +52,7 @@ export default {
       return this.likedSongs.slice(this.offset, this.offset + this.rowsPerPage);
     },
   },
-  created() {
-    setTimeout(() => {
-      this.snapShot();
-    }, 2000);
-  },
   methods: {
-    // async searchSongs() {
-    //   this.loading = true;
-    //   this.error = "";
-
-    //   try {
-    //     // Search for tracks on Last.fm
-    //     const response = await axios.get(
-    //       `https://ws.audioscrobbler.com/2.0/?method=track.search&track=${this.query}&api_key=${this.API_KEY}&limit='1500'&format=json`
-    //     );
-    //     const tracks = response.data.results.trackmatches.track;
-
-    //     // Use FuzzySet.js to perform fuzzy string matching
-    //     const fuzzyTracks = FuzzySet(
-    //       tracks.map((t) => `${t.artist}~${t.name}`)
-    //     );
-
-    //     const matchedTracks = fuzzyTracks.exactSet;
-
-    //     // Query Last.fm for additional song information
-    //     let songPromises = [];
-
-    //     for (let key in matchedTracks) {
-    //       const [artist, name] = key.split("~");
-    //       const response = axios.get(
-    //         `https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=${this.API_KEY}&artist=${artist}&track=${name}&format=json`
-    //       );
-
-    //       songPromises.push(response);
-    //     }
-
-    //     const songResponses = await Promise.all(songPromises);
-    //     const songs = songResponses.map((response) => response.data.track);
-    //     const definedSongs = songs.filter((song) => song !== undefined);
-    //     this.searchedSongs = definedSongs;
-    //   } catch (error) {
-    //     this.error = error.message;
-    //   } finally {
-    //     this.loading = false;
-    //   }
-    // },
     snapShot() {
       onSnapshot(likedSongsByUserRef, (snapshot) => {
         if (snapshot.data()) {
@@ -118,6 +70,11 @@ export default {
       this.offset = event.first;
       this.pageSize = event.rows;
     },
+  },
+  created() {
+    setTimeout(() => {
+      this.snapShot();
+    }, 2000);
   },
 };
 </script>
