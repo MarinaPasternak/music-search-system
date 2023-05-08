@@ -29,13 +29,26 @@ export function updateUserId(newUserId) {
     likedSongsByUserRef = doc(firebaseStore, "likedSongs", userId);
 }
 
-export async function addSongToLikedSongs(songTitle, artistName) {
-    let likedSongsByUser = [];
-    if ((await getDoc(likedSongsByUserRef)).data()) {
-        likedSongsByUser = (await getDoc(likedSongsByUserRef)).data().AllLikedSongs;
+export async function isSongLiked(songTitle, artistName) {
+    const song = `${songTitle}~${artistName}`;
+    const doc = await getDoc(likedSongsByUserRef);
+  
+    if (doc.exists()) {
+      const likedSongsByUser = doc.data().AllLikedSongs;
+      return likedSongsByUser.includes(song);
     }
+    return false;
+  }
 
-  likedSongsByUser.push(`${songTitle}~${artistName}`);
+export async function addSongToLikedSongs(songTitle, artistName) {
+    const song = `${songTitle}~${artistName}`;
+    const doc = await getDoc(likedSongsByUserRef);
+    if (doc.exists()) {
+      const likedSongsByUser = doc.data().AllLikedSongs;
+      likedSongsByUser.push(song);
+      await setDoc(likedSongsByUserRef, { AllLikedSongs: likedSongsByUser });
+    } else {
+      await setDoc(likedSongsByUserRef, { AllLikedSongs: [song] });
+    }
+  }
 
-  await setDoc(likedSongsByUserRef, { AllLikedSongs: likedSongsByUser });
-}

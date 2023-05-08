@@ -24,8 +24,8 @@
           class="like"
           text
           rounded
+          :class="{ hidden: isItLiked }"
           @click="likeSong()"
-          :disable="likeDisabled"
         />
       </div>
       <div class="track-description">
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { addSongToLikedSongs } from "../firebase/init";
+import { addSongToLikedSongs, isSongLiked } from "../firebase/init";
 import { notify } from "@kyvg/vue3-notification";
 
 import Badge from "primevue/badge";
@@ -47,7 +47,13 @@ const API_KEY = process.env.VUE_APP_LAST_FM_API_KEY;
 
 export default {
   name: "TrackCard",
-  props: ["trackName", "artistName", "postionInChart", "trackSearched"],
+  props: [
+    "trackName",
+    "artistName",
+    "postionInChart",
+    "trackSearched",
+    "isItLiked",
+  ],
   components: {
     Badge,
     Button,
@@ -100,25 +106,37 @@ export default {
         params: { artist: this.artistName, song: this.track.name },
       });
     },
-    likeSong() {
-      // Add liked song to Firebase
-      addSongToLikedSongs(this.track.name, this.track.artist.name)
-        .then(() => {
-          this.likeDisabled = true;
+    async likeSong() {
+      const isSongAlreadyLiked = await isSongLiked(
+        this.track.name,
+        this.track.artist.name
+      );
 
-          notify({
-            title: "Liked!",
-            text: `You have laked ${this.track.name} by ${this.track.artist.name}`,
-          });
-        })
-        .catch((error) => {
-          notify({
-            type: "error",
-            title: "Error",
-            text: error,
-          });
-          console.error("Error adding document: ", error);
+      if (isSongAlreadyLiked) {
+        notify({
+          title: "Sorry,",
+          text: "You have already liked this song",
         });
+      } else {
+        addSongToLikedSongs(this.track.name, this.track.artist.name)
+          .then(() => {
+            this.likeDisabled = true;
+
+            notify({
+              type: "success",
+              title: "Liked!",
+              text: `You have laked ${this.track.name} by ${this.track.artist.name}`,
+            });
+          })
+          .catch((error) => {
+            notify({
+              type: "error",
+              title: "Error",
+              text: error,
+            });
+            console.error("Error adding document: ", error);
+          });
+      }
     },
   },
   created() {
@@ -179,6 +197,10 @@ export default {
 .track-header {
   display: flex;
   align-items: flex-end;
+}
+
+.hidden {
+  display: none;
 }
 
 ::v-deep span.pi-heart-fill {

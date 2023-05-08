@@ -10,6 +10,7 @@
           :trackName="track.songTitle"
           :artistName="track.artistName"
           :trackSearched="null"
+          :isItLiked="true"
         ></track-card>
       </div>
       <Paginator
