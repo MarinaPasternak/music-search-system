@@ -15,9 +15,9 @@
       <div class="track-header">
         <h4>
           <span
-            ><a :href="track.artist.url">{{ artistName }}</a></span
+            ><a :href="track.artist.url">{{ this.track.artist.name }}</a></span
           >
-          - {{ track.name }}
+          - {{ this.track.name }}
         </h4>
         <Button
           icon="pi pi-heart-fill"
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { addSongToLikedSongs, isSongLiked } from "../firebase/init";
+import { addSongToLikedSongs, checkUniqueness } from "../firebase/init";
 import { notify } from "@kyvg/vue3-notification";
 
 import Badge from "primevue/badge";
@@ -107,9 +107,9 @@ export default {
       });
     },
     async likeSong() {
-      const isSongAlreadyLiked = await isSongLiked(
-        this.track.name,
-        this.track.artist.name
+      const isSongAlreadyLiked = await checkUniqueness(
+        `${this.track.name}~${this.track.artist.name}`,
+        "AllLikedSongs"
       );
 
       if (isSongAlreadyLiked) {

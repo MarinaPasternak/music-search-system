@@ -5,7 +5,7 @@
       <div class="flex-container">
         <track-card
           v-for="(track, index) in pagedLikedSongs"
-          :key="track.url"
+          :key="track.songTitle + track.artistName"
           :postionInChart="index + offset + 1"
           :trackName="track.songTitle"
           :artistName="track.artistName"
@@ -56,7 +56,7 @@ export default {
   methods: {
     snapShot() {
       onSnapshot(likedSongsByUserRef, (snapshot) => {
-        if (snapshot.data()) {
+        if (snapshot.data() && snapshot.data().AllLikedSongs) {
           this.likedSongs = snapshot.data().AllLikedSongs;
         } else {
           this.likedSongs = [];
@@ -75,7 +75,7 @@ export default {
   created() {
     setTimeout(() => {
       this.snapShot();
-    }, 2000);
+    }, 1000);
   },
 };
 </script>

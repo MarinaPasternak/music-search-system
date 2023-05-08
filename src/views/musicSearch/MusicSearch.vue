@@ -1,14 +1,25 @@
 <template>
   <div class="music-search-component">
-    <div class="searcher-container">
-      <InputText v-model="query" placeholder="Search for a song" />
-      <Button
-        @click="searchSongs"
-        icon="pi pi-search"
-        size="large"
-        :disabled="!query"
-      ></Button>
+    <div>
+      <div class="searcher-container">
+        <InputText v-model="query" placeholder="Search for a song" />
+        <Button
+          @click="searchSongs"
+          icon="pi pi-search"
+          size="large"
+          :disabled="query.length === 0 || loading"
+        ></Button>
+      </div>
+      <div class="badges-container">
+        <Badge
+          v-for="searchQuery in searches"
+          :key="searchQuery"
+          :value="searchQuery"
+          @click="searchByMostSearchedTags(searchQuery)"
+        />
+      </div>
     </div>
+
     <template v-if="loading">
       <loading-component></loading-component>
     </template>
@@ -54,10 +65,14 @@
 <script>
 import axios from "axios";
 import FuzzySet from "fuzzyset.js";
+import { searchedQueryByUserRef } from "../../firebase/init";
+import { onSnapshot } from "firebase/firestore";
+import { addQueryToSearches, checkUniqueness } from "../../firebase/init";
 
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import Paginator from "primevue/paginator";
+import Badge from "primevue/badge";
 import LoadingComponent from "@/components/LoadingComponent.vue";
 import TrackCard from "@/components/TrackCard.vue";
 export default {
@@ -69,6 +84,7 @@ export default {
     Paginator,
     LoadingComponent,
     TrackCard,
+    Badge,
   },
   data() {
     return {
@@ -78,6 +94,8 @@ export default {
       error: "",
       offset: 0,
       rowsPerPage: 10,
+      searches: null,
+      databaseRef: searchedQueryByUserRef,
     };
   },
   computed: {
@@ -86,6 +104,25 @@ export default {
     },
   },
   methods: {
+    snapShot() {
+      onSnapshot(searchedQueryByUserRef, (snapshot) => {
+        if (snapshot.data()) {
+          this.searches = snapshot.data().allSearches.slice(-5);
+        } else {
+          this.searches = [];
+        }
+      });
+    },
+    async addSearchesToArray() {
+      const isSearchAlreadyAdded = await checkUniqueness(
+        this.query,
+        "allSearches"
+      );
+
+      if (!isSearchAlreadyAdded) {
+        await addQueryToSearches(this.query);
+      }
+    },
     onPageChangeHandler(event) {
       this.offset = event.first;
       this.pageSize = event.rows;
@@ -164,6 +201,8 @@ export default {
         const allSongs = [...definedSongs, ...definedTagSongs];
         const dedupedSongs = Array.from(new Set(allSongs));
 
+        this.addSearchesToArray();
+
         this.songs = dedupedSongs;
       } catch (error) {
         console.error(error);
@@ -172,12 +211,22 @@ export default {
         this.loading = false;
       }
     },
+    searchByMostSearchedTags(searchQuery) {
+      this.query = searchQuery;
+      this.searchSongs();
+    },
+  },
+  created() {
+    setTimeout(() => {
+      this.snapShot();
+    }, 2000);
   },
   watch: {
     passedQuery(newPassedQuery) {
       if (newPassedQuery && newPassedQuery.length > 0) {
         this.query = newPassedQuery;
         this.searchSongs();
+        this.addSearchesToArray();
         window.scrollTo(0, 0);
       }
     },
@@ -225,6 +274,28 @@ export default {
 .paginator {
   width: fit-content;
   margin: auto;
+}
+
+.badges-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+
+  span {
+    margin: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+}
+
+::v-deep span.p-badge {
+  padding: 0 0.8rem;
+  background-color: $secondary-color;
+  color: $white-color;
+}
+
+::v-deep span.p-badge:hover {
+  background-color: $blue-color;
 }
 
 ::v-deep input.p-inputtext:enabled:focus {
