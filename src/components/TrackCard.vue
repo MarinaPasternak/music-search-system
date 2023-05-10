@@ -70,7 +70,7 @@
         />
       </div>
       <div class="p-field">
-        <Button label="Save" class="p-mr-2" @click="saveRules()" />
+        <Button label="Save" class="p-mr-2" @click="likeSong()" />
         <Button
           label="Cancel"
           class="p-button-secondary"
@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { addSongToLikedSongs, checkUniqueness } from "../firebase/init";
+import { addSongToLikedSongs, checkSongUniqueness } from "../firebase/init";
 import { notify } from "@kyvg/vue3-notification";
 
 import Badge from "primevue/badge";
@@ -177,10 +177,32 @@ export default {
       });
     },
     async likeSong() {
-      const isSongAlreadyLiked = await checkUniqueness(
-        `${this.track.name}~${this.track.artist.name}`,
-        "AllLikedSongs"
-      );
+      const likedSong = {
+        title: this.track.name,
+        artist: this.track.artist.name,
+        affective: {
+          score: this.affective,
+          description: this.getDescription(
+            this.affective,
+            this.rules.affective
+          ),
+        },
+        structural: {
+          score: this.structural,
+          description: this.getDescription(
+            this.structural,
+            this.rules.structural
+          ),
+        },
+        kinesthetic: {
+          score: this.kinesthetic,
+          description: this.getDescription(
+            this.kinesthetic,
+            this.rules.kinesthetic
+          ),
+        },
+      };
+      const isSongAlreadyLiked = await checkSongUniqueness(likedSong);
 
       if (isSongAlreadyLiked) {
         notify({
@@ -188,7 +210,7 @@ export default {
           text: "You have already liked this song",
         });
       } else {
-        addSongToLikedSongs(this.track.name, this.track.artist.name)
+        addSongToLikedSongs(likedSong)
           .then(() => {
             this.likeDisabled = true;
 
@@ -210,6 +232,16 @@ export default {
     },
     showRulesForm() {
       this.showDialog = true;
+    },
+    getDescription(score, rules) {
+      // Find the rule with the closest score to the given score
+      const rule = rules.reduce((prev, curr) =>
+        Math.abs(curr.score - score) < Math.abs(prev.score - score)
+          ? curr
+          : prev
+      );
+
+      return rule.description;
     },
   },
   created() {

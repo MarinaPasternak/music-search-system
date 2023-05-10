@@ -5,10 +5,10 @@
       <div class="flex-container">
         <track-card
           v-for="(track, index) in pagedLikedSongs"
-          :key="track.songTitle + track.artistName"
+          :key="track.title + track.artist"
           :postionInChart="index + offset + 1"
-          :trackName="track.songTitle"
-          :artistName="track.artistName"
+          :trackName="track.title"
+          :artistName="track.artist"
           :trackSearched="null"
           :isItLiked="true"
         ></track-card>
@@ -61,10 +61,6 @@ export default {
         } else {
           this.likedSongs = [];
         }
-        this.likedSongs = this.likedSongs.map((item) => {
-          const [songTitle, artistName] = item.split("~");
-          return { songTitle, artistName };
-        });
       });
     },
     onPageChangeHandler(event) {

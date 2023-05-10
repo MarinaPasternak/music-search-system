@@ -31,31 +31,38 @@ export function updateUserId(newUserId) {
     searchedQueryByUserRef = doc(firebaseStore, "searchedQuery", userId);
 }
 
+export async function checkSearchUniqueness(string) {
+  const doc = await getDoc(searchedQueryByUserRef);
 
-
-  export async function checkUniqueness(string, arrayToGet) {
-    if (arrayToGet === "AllLikedSongs") {
-        const doc = await getDoc(likedSongsByUserRef);
-
-        if (doc.exists()) {
-            const likedSongsByUser = doc.data().AllLikedSongs || [];
-            return likedSongsByUser.includes(string);
-          }
-          return false;
-
-    } else if (arrayToGet === "allSearches") {
-        const doc = await getDoc(searchedQueryByUserRef);
-
-        if (doc.exists()) {
-            const searchedByUser = doc.data().allSearches;
-            return searchedByUser.includes(string);
-          }
-          return false;
+  if (doc.exists()) {
+      const searchedByUser = doc.data().allSearches;
+      return searchedByUser.includes(string);
     }
-  }
+    return false;
+}
 
-  export async function addSongToLikedSongs(songTitle, artistName) {
-    const song = `${songTitle}~${artistName}`;
+export async function checkSongUniqueness(song) {
+  const doc = await getDoc(likedSongsByUserRef);
+
+  if (doc.exists()) {
+    const allLikedSongsByUser = doc.data().AllLikedSongs;
+    const { title, artist } = song;
+    if (allLikedSongsByUser) {
+      for (const likedSong in allLikedSongsByUser) {
+        const likedSongObject = allLikedSongsByUser[likedSong];
+        if (likedSongObject.title === title && likedSongObject.artist === artist) {
+          return true;
+        }
+      }
+    } else {
+      false;
+    }
+    
+  }
+  return false;
+}
+
+export async function addSongToLikedSongs(song) {
     const doc = await getDoc(likedSongsByUserRef);
 
     if (doc.exists()) {
@@ -72,7 +79,7 @@ export function updateUserId(newUserId) {
     } else {
       await setDoc(likedSongsByUserRef, { AllLikedSongs: [song] });
     }
-  }
+}
 
 export async function addQueryToSearches(query) {
     const doc = await getDoc(searchedQueryByUserRef);

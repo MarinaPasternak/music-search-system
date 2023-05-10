@@ -67,7 +67,7 @@ import axios from "axios";
 import FuzzySet from "fuzzyset.js";
 import { searchedQueryByUserRef } from "../../firebase/init";
 import { onSnapshot } from "firebase/firestore";
-import { addQueryToSearches, checkUniqueness } from "../../firebase/init";
+import { addQueryToSearches, checkSearchUniqueness } from "../../firebase/init";
 
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
@@ -114,10 +114,7 @@ export default {
       });
     },
     async addSearchesToArray() {
-      const isSearchAlreadyAdded = await checkUniqueness(
-        this.query,
-        "allSearches"
-      );
+      const isSearchAlreadyAdded = await checkSearchUniqueness(this.query);
 
       if (!isSearchAlreadyAdded) {
         await addQueryToSearches(this.query);
