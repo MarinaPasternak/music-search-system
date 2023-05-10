@@ -1,7 +1,6 @@
 import SignUpForm from "../views/signUp/SignUpForm.vue";
 import SignInForm from "../views/signIn/SignInForm.vue";
 import HomeComponent from "../views/homePage/Home";
-import StatisticComponent from"../views/statistic/StatisticComponent.vue";
 import TrackPage from '../views/trackPage/TrackPage.vue';
 import NotFound from '../components/NotFoundedComponent.vue';
 
@@ -22,11 +21,6 @@ export const routes = [
         path: '/song/:artist/:song',
         name: 'song',
         component: TrackPage
-      }, {
-        path: '/statistic',
-        name: 'statistic',
-        component: StatisticComponent,
-        meta: { requiresAuth: true }
     }, {
         path: '/:pathMatch(.*)*',
         name: 'not-found',

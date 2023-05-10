@@ -86,8 +86,10 @@ export default {
       return this.track.playcount;
     },
     topTags() {
-      if (this.track.toptags.tag.length === 0) {
+      if (this.track.toptags && this.track.toptags.tag.length === 0) {
         return ["no tags rigth now"];
+      } else if (this.track.tags) {
+        return this.track.tags;
       }
       return this.track.toptags.tag.map((item) => item.name);
     },

@@ -3,6 +3,7 @@
     <h1 class="gradient-title">{{ fullName }}</h1>
     <music-search :passedQuery="passedQuery"></music-search>
     <liked-songs-component></liked-songs-component>
+    <recomended-songs-component></recomended-songs-component>
     <top-artist-component></top-artist-component>
     <top-tags-component @getTagName="searchByTag"></top-tags-component>
     <top-tracks-chart-component></top-tracks-chart-component>
@@ -17,6 +18,7 @@ import TopArtistComponent from "./components/TopArtistComponent.vue";
 import TopTagsComponent from "./components/TopTagsComponent.vue";
 import MusicSearch from "../musicSearch/MusicSearch.vue";
 import LikedSongsComponent from "./components/LikedSongsComponent.vue";
+import RecomendedSongsComponent from "./components/RecomendedSongsComponent.vue";
 
 export default {
   name: "HomeComponent",
@@ -26,6 +28,7 @@ export default {
     TopTagsComponent,
     MusicSearch,
     LikedSongsComponent,
+    RecomendedSongsComponent,
   },
   data() {
     return {
