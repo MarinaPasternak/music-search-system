@@ -34,8 +34,6 @@ export function updateUserId(newUserId) {
 
 
   export async function checkUniqueness(string, arrayToGet) {
-   
-
     if (arrayToGet === "AllLikedSongs") {
         const doc = await getDoc(likedSongsByUserRef);
 

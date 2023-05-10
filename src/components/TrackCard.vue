@@ -1,36 +1,81 @@
 <template>
   <div class="track-card" v-if="track">
-    <p>{{ postionInChart }}.</p>
-    <template v-if="track.album && track.album.image[0]['#text']">
-      <img
-        :src="track.album.image[0]['#text']"
-        :alt="track.name"
-        @click="rediractOnTrackInformation"
-      />
-    </template>
-    <template v-else>
-      <div class="color-square" @click="rediractOnTrackInformation"></div>
-    </template>
-    <div class="track-information">
-      <div class="track-header">
-        <h4>
-          <span
-            ><a :href="track.artist.url">{{ this.track.artist.name }}</a></span
-          >
-          - {{ this.track.name }}
-        </h4>
-        <Button
-          icon="pi pi-heart-fill"
-          class="like"
-          text
-          rounded
-          :class="{ hidden: isItLiked }"
-          @click="likeSong()"
+    <div class="d-flex">
+      <p>{{ postionInChart }}.</p>
+      <template v-if="track.album && track.album.image[0]['#text']">
+        <img
+          :src="track.album.image[0]['#text']"
+          :alt="track.name"
+          @click="rediractOnTrackInformation"
+        />
+      </template>
+      <template v-else>
+        <div class="color-square" @click="rediractOnTrackInformation"></div>
+      </template>
+      <div class="track-information">
+        <div class="track-header">
+          <h4>
+            <span
+              ><a :href="track.artist.url">{{
+                this.track.artist.name
+              }}</a></span
+            >
+            - {{ this.track.name }}
+          </h4>
+          <Button
+            icon="pi pi-heart-fill"
+            class="like"
+            text
+            rounded
+            @click="showRulesForm"
+            :class="{ hidden: isItLiked }"
+          />
+        </div>
+        <div class="track-description">
+          <p>{{ playcountCut }}</p>
+          <badge v-for="tagName in topTags" :key="tagName" :value="tagName" />
+        </div>
+      </div>
+    </div>
+    <div
+      class="add-rules-container"
+      :class="{ hidden: !showDialog || isItLiked }"
+    >
+      {{ !showDialog || isItLiked }}
+      <div class="p-field">
+        <label for="structural">Structural</label>
+        <Dropdown
+          v-model="structural"
+          :options="rules.structural"
+          :option-label="(option) => option.description"
+          :option-value="(option) => option.score"
         />
       </div>
-      <div class="track-description">
-        <p>{{ playcountCut }}</p>
-        <badge v-for="tagName in topTags" :key="tagName" :value="tagName" />
+      <div class="p-field">
+        <label for="affective">Affective</label>
+        <Dropdown
+          v-model="affective"
+          :options="rules.affective"
+          :option-label="(option) => option.description"
+          :option-value="(option) => option.score"
+        />
+      </div>
+      <div class="p-field">
+        <label for="kinesthetic">Kinesthetic</label>
+        <Dropdown
+          v-model="kinesthetic"
+          :options="rules.kinesthetic"
+          :option-label="(option) => option.description"
+          :option-value="(option) => option.score"
+        />
+      </div>
+      <div class="p-field">
+        <Button label="Save" class="p-mr-2" @click="saveRules()" />
+        <Button
+          label="Cancel"
+          class="p-button-secondary"
+          @click="showDialog = false"
+        />
       </div>
     </div>
   </div>
@@ -42,6 +87,7 @@ import { notify } from "@kyvg/vue3-notification";
 
 import Badge from "primevue/badge";
 import Button from "primevue/button";
+import Dropdown from "primevue/dropdown";
 import axios from "axios";
 const API_KEY = process.env.VUE_APP_LAST_FM_API_KEY;
 
@@ -57,11 +103,33 @@ export default {
   components: {
     Badge,
     Button,
+    Dropdown,
   },
   data() {
     return {
       track: null,
       likeDisabled: false,
+      showDialog: false,
+      affective: 5,
+      structural: 5,
+      kinesthetic: 5,
+      rules: {
+        affective: [
+          { score: 0, description: "Sad" },
+          { score: 5, description: "Neutral" },
+          { score: 10, description: "Happy" },
+        ],
+        structural: [
+          { score: 0, description: "Simple" },
+          { score: 5, description: "Balanced" },
+          { score: 10, description: "Complex" },
+        ],
+        kinesthetic: [
+          { score: 0, description: "Still" },
+          { score: 5, description: "Moderate" },
+          { score: 10, description: "Dynamic" },
+        ],
+      },
     };
   },
   computed: {
@@ -140,6 +208,9 @@ export default {
           });
       }
     },
+    showRulesForm() {
+      this.showDialog = true;
+    },
   },
   created() {
     if (!this.trackSearched) {
@@ -156,6 +227,7 @@ export default {
 
 .track-card {
   display: flex;
+  flex-direction: column;
   margin-bottom: 1rem;
   cursor: pointer;
 
@@ -201,11 +273,36 @@ export default {
   align-items: flex-end;
 }
 
+.add-rules-container {
+  display: flex;
+  width: fit-content;
+  padding: 15px;
+  margin: 1rem;
+  margin-left: 2.5rem;
+  background-color: rgb(26, 26, 26);
+
+  .p-field {
+    display: flex;
+    flex-direction: column;
+    margin-right: 15px;
+  }
+
+  .p-field:last-child {
+    button {
+      margin-bottom: 10px;
+    }
+  }
+}
+
 .hidden {
   display: none;
 }
 
 ::v-deep span.pi-heart-fill {
   color: $dark-purple-color;
+}
+
+::v-deep span.p-inputtext {
+  padding: 0.5rem 0.5rem;
 }
 </style>

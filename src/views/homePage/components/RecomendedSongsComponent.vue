@@ -127,14 +127,14 @@ export default {
           })
           .sort((a, b) => b.similarityScore - a.similarityScore);
 
-        console.log(this.recommendedSongs);
+        // console.log(this.recommendedSongs);
 
         // Log the similarity score of each recommended song
-        this.recommendedSongs.forEach((song) => {
-          console.log(
-            `${song.title} - ${song.artist}: ${song.similarityScore}`
-          );
-        });
+        // this.recommendedSongs.forEach((song) => {
+        //   console.log(
+        //     `${song.title} - ${song.artist}: ${song.similarityScore}`
+        //   );
+        // });
       } catch (error) {
         console.error(error);
       }

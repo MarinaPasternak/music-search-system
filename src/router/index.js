@@ -1,6 +1,6 @@
 import SignUpForm from "../views/signUp/SignUpForm.vue";
 import SignInForm from "../views/signIn/SignInForm.vue";
-import HomeComponent from "../views/homePage/Home";
+import HomePage from "../views/homePage/HomePage.vue";
 import TrackPage from '../views/trackPage/TrackPage.vue';
 import NotFound from '../components/NotFoundedComponent.vue';
 
@@ -8,7 +8,7 @@ export const routes = [
     {
         path: '/',
         name: 'home-page',
-        component: HomeComponent
+        component: HomePage
     }, {
         path: '/sign-in',
         name: 'sign-in',
