@@ -163,8 +163,13 @@ export default {
 
         // Log the similarity score of each recommended song
         this.recommendedSongs.forEach((song) => {
+          for (let i = 0; i < song.similarityScore.length; i++) {
+            if (isNaN(song.similarityScore[i])) {
+              song.similarityScore[i] = 0;
+            }
+          }
           console.log(
-            `${song.title} - ${song.artist}: ${song.similarityScore}`
+            `${song.name} - ${song.artist.name}: ${song.similarityScore}`
           );
         });
       } catch (error) {
